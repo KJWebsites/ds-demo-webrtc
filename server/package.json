@@ -1,0 +1,26 @@
+{
+  "name": "ds-demo-webrtc",
+  "version": "0.0.0",
+  "description": "",
+  "main": "start.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoxton-one/ds-demo-webtrc.git"
+  },
+  "keywords": [
+    "deepstream.io",
+    "webrtc"
+  ],
+  "author": "Yasser Fadl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoxton-one/ds-demo-webtrc/issues"
+  },
+  "homepage": "https://github.com/hoxton-one/ds-demo-webtrc#readme",
+  "dependencies": {
+    "deepstream.io": "^0.4.1"
+  }
+}
