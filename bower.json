@@ -1,0 +1,23 @@
+{
+  "name": "ds-demo-webtrc",
+  "version": "0.0.0",
+  "homepage": "https://github.com/hoxton-one/ds-demo-webtrc",
+  "authors": [
+    "Wolfram Hempel <hempel.wolfram@gmail.com>",
+    "Yasser Fadl <yasser.fadl@gmail.com>"
+  ],
+  "description": "A sample webrtc example",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "deepstream.io-client-js": "latest",
+    "webrtc-adapter": "~0.2.1"
+  }
+}
