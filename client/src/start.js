@@ -1,11 +1,11 @@
 function start() {
-    var ds = deepstream( 'localhost:6020' )
+    var ds = deepstream( 'http://52.28.147.204:6020' );
     ds.login( {
         username: 'ds-webrtc-example-' + ds.getUid()
     } );
 
+    var users;
     var sourcevid = document.getElementById( 'localvideo' );
-    var remotevid = document.getElementById( 'remotevideo' );
 
     var mediaStream = null;
     var addressBook = [];
@@ -27,22 +27,37 @@ function start() {
         }
     );
 
-    function onCallEstablished( stream ) {
-                      console.log( "Added remote stream" );
-                remotevid.src = window.URL.createObjectURL( event.stream );
+    function onCallEstablished( call, stream ) {
+      var remotevid = document.createElement( 'video' );
+      remotevid.className = "remotevideo";
+      remotevid.autoplay = true;
+      document.body.appendChild( remotevid );
+      remotevid.src = window.URL.createObjectURL( event.stream );
+
+      call.on( 'ended', function() {
+        document.body.removeChild( remotevid );
+      })
     }
 
     function startApp() {
         var iam = ( Math.random() * 100 ).toFixed( 0 );
+        
         ds.webrtc.registerCallee( iam, function( call, metadata ) {
-            call.on( 'established', onCallEstablished );
+            call.on( 'established', onCallEstablished.bind( null, call ) );
             call.accept( mediaStream );
         } );
 
-        ds.webrtc.listenForCallees( function( callees ) {
-            addressBook = callees;
-            var call = ds.webrtc.makeCall( callees[ 0 ], {}, mediaStream );
-            call.on( 'established', onCallEstablished );
-        } );
+        ds.rpc.make( 'get-random-room', {
+            user: iam
+          },
+          function( error, data ) {
+            var call;
+            for( var i=0; i<data.length; i++) {
+              if( data[ i ] !== iam) {
+                  call = ds.webrtc.makeCall( data[ i ], {}, mediaStream );
+                  call.on( 'established', onCallEstablished.bind( null, call ) );
+              }
+            }
+       } );
     }
 }
