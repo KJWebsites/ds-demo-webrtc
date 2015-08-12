@@ -50,9 +50,10 @@ function start() {
     window.addEventListener( "resize", resize );
     resize();
 
-    function onCallEstablished( call, stream ) {
-        var remotevid = document.querySelector( '#remotevideo-' + activeCalls + ' video' );
-        remotevid.src = window.URL.createObjectURL( event.stream );
+    function onCallEstablished( call, metaData, stream ) {
+        var remotevid = document.querySelector( '#remotevideo-' + activeCalls );
+        remotevid.querySelector( 'video' ).src = window.URL.createObjectURL( event.stream );
+        remotevid.querySelector( '.username' ).textContent = metaData.username;
         activeCalls++;
 
         call.on( 'ended', function() {
@@ -63,8 +64,8 @@ function start() {
 
     function startApp() {
         var calls = [];
-        ds.webrtc.registerCallee( iam, function( call, metadata ) {
-            call.on( 'established', onCallEstablished.bind( null, call ) );
+        ds.webrtc.registerCallee( iam, function( call, metaData ) {
+            call.on( 'established', onCallEstablished.bind( null, call, metaData ) );
             call.accept( mediaStream );
             calls.push( call );
         } );
@@ -80,12 +81,14 @@ function start() {
             },
             function( error, data ) {
                 var call;
-                console.log( error, data)
+                var metaData = {
+                    username: iam
+                };
                 if ( !error ) {
                     for ( var i = 0; i < data.length; i++ ) {
                         if ( data[ i ] !== iam ) {
-                            call = ds.webrtc.makeCall( data[ i ], {}, mediaStream );
-                            call.on( 'established', onCallEstablished.bind( null, call ) );
+                            call = ds.webrtc.makeCall( data[ i ], metaData, mediaStream );
+                            call.on( 'established', onCallEstablished.bind( null, call, metaData ) );
                         }
                     }
                 }
