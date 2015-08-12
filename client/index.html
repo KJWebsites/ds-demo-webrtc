@@ -12,7 +12,15 @@
 	<script type="text/javascript" src="src/start.js"></script>
 </head>
 <body onload="start();">
-	<video id="localvideo" class="localvideo" autoplay></video>
+
+	<template id="remotevideo">
+		<span class="remotevideo videofeed">
+				<span class="username"></span>
+				<video autoplay></video>
+		</span>
+	</template>
+
+	<video id="localvideo" class="localvideo videofeed" autoplay></video>
 
 </body>
 </html>

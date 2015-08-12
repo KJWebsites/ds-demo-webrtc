@@ -1,8 +1,14 @@
 .remotevideo, .localvideo {
-	box-sizing: border-box;
+	float: left;
+	display: inline-block;
 	margin: 5px;
 	border-radius: 5px;
 	border: 1px solid black;
+}
+
+video {
+	width: 100%;
+	height: 100%;
 }
 
 * {
