@@ -1,9 +1,11 @@
-var ds = require( 'deepstream.io-client-js' )( '52.28.147.204:6021' );
+var ds = require( 'deepstream.io-client-js' )( 'localhost:6021' );
 var RoomsProvider = require( './rooms' );
 var rooms;
 
 var authData = {
-	name: 'rooms'
+	name: 'rooms',
+	type: 'provider',
+	key: process.env.PROVIDER_KEY
 };
 
 ds.login( authData, function( success, errorEvent, errorMsg ){

@@ -27,17 +27,23 @@ module.exports = function( ds ) {
 		for( var name in unsubscribedUsers ) {
 			user = unsubscribedUsers[ name ];
 			if( typeof user.room !== 'undefined' ) {
-				room = rooms[ user.room ];
+				room = user.room;
 				user = room.users.splice( room.users.indexOf( name ), 1 );
 				utils.log( 'Removing user ' + name + ' from room ' + room.name );
-				utils.log( 'Room ' + room.name + ' now has ' + room.users.length + ' users' + ' : ' + JSON.stringify( room.users ) );
+
+				if( room.users.length === 0 ) {
+					rooms.splice( rooms.indexOf( room ), 1 );
+					utils.log( 'Removing room ' + user.room + '. ' + Object.keys( rooms ).length + ' rooms left.' );
+				} else {
+					utils.log( 'Room ' + room.name + ' now has ' + room.users.length + ' users : ' + room.users.join( ',' ) );
+				}
 			}
 		}
 	}
 
 	function addUserToRoom( room, user) {
 		room.users.push( user.name );
-		user.room = room.name;
+		user.room = room;
 		utils.log( 'Added user ' + user.name + ' to room ' + room.name );
 		utils.log( 'Room ' + room.name + ' now has ' + room.users.length + ' users : ' + room.users.join( ',' ) );
 	}

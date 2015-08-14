@@ -1,5 +1,5 @@
 function start() {
-    var ds = deepstream( 'http://52.28.147.204:6020' );
+    var ds = deepstream( 'http://192.168.0.201:6020' );
     var iam = ds.getUid();
     ds.login( {
         username: 'ds-webrtc-example-' + iam
@@ -14,8 +14,8 @@ function start() {
     navigator.getUserMedia( {
             audio: false,
             video: {
-                width: 320,
-                height: 180
+                width: 80,
+                height: 60
             }
         },
         function( stream ) {
