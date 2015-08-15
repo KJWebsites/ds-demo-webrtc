@@ -1,21 +1,24 @@
 function start() {
-    var ds = deepstream( 'http://192.168.0.201:6020' );
+    var ds = deepstream( 'http://52.28.147.204:6020' );
     var iam = ds.getUid();
     ds.login( {
         username: 'ds-webrtc-example-' + iam
     } );
 
-    var activeCalls = 0;
-    var sourcevid = document.getElementById( 'localvideo' );
+    var example = document.querySelector( '.webrtc-example' );
+    example.classList.add( 'active' );
+
+    var sourcevid = document.querySelector( '.localvideo' );
 
     var mediaStream = null;
+    var calls = [];
     var addressBook = [];
 
     navigator.getUserMedia( {
             audio: false,
             video: {
-                width: 80,
-                height: 60
+                width: 160,
+                height: 120
             }
         },
         function( stream ) {
@@ -28,54 +31,36 @@ function start() {
         }
     );
 
-    for ( var i = 0; i < 8; i++ ) {
-        var remotevid = document.querySelector( '#remotevideo' );
-        remotevid.content.querySelector( '.remotevideo' ).id = "remotevideo-" + i;
-        var clone = document.importNode( remotevid.content, true );
-        document.body.insertBefore( clone, sourcevid );
+    function onCallRecieved( call, metaData ) {
+        call.on( 'established', onCallEstablished.bind( null, call, metaData ) );
+        call.accept( mediaStream );
+        calls.push( call );
     }
-
-    function resize() {
-        var width = window.innerWidth;
-        var height = window.innerHeight;
-        var elementWidth = Math.round( ( width - 60 ) / 3 );
-        var elementHeight = Math.round( ( height - 60 ) / 3 );
-
-        var elements = document.querySelectorAll( '.videofeed' ) ;
-        for ( var i = 0; i < elements.length; i++ ) {
-            elements[ i ].style.width = elementWidth + 'px';
-            elements[ i ].style.height = elementHeight + 'px';
-        }
-    }
-    window.addEventListener( "resize", resize );
-    resize();
 
     function onCallEstablished( call, metaData, stream ) {
-        var remotevid = document.querySelector( '#remotevideo-' + activeCalls );
-        remotevid.querySelector( 'video' ).src = window.URL.createObjectURL( event.stream );
-        remotevid.querySelector( '.username' ).textContent = metaData.username;
-        activeCalls++;
+        var remotevid = document.querySelector( '.remotevideo:not(.active)' );
+        remotevid.src = window.URL.createObjectURL( event.stream );
+        remotevid.classList.add( 'active' );
 
         call.on( 'ended', function() {
-            activeCalls--;
+            remotevid.classList.remove( 'active' );
             window.URL.revokeObjectURL( remotevid.src );
         } );
     }
 
-    function startApp() {
-        var calls = [];
-        ds.webrtc.registerCallee( iam, function( call, metaData ) {
-            call.on( 'established', onCallEstablished.bind( null, call, metaData ) );
-            call.accept( mediaStream );
-            calls.push( call );
+    function exitRoom() {
+        endAllCalls();
+        ds.rpc.make( 'exit-room', {
+                user: iam
+            },
+            function( error, data ) {
+                if ( !error ) {
+                   
+                }
         } );
+    }
 
-        window.addEventListener( "unload", function( event ) {
-            for ( var i = 0; i < calls.length; i++ ) {
-                calls[ i ].end();
-            }
-        }, true );
-
+    function enterRandomRoom() {
         ds.rpc.make( 'get-random-room', {
                 user: iam
             },
@@ -93,6 +78,28 @@ function start() {
                     }
                 }
 
-            } );
+        } );
+    }
+
+    function changeRoom() {
+        exitRoom();
+        enterRandomRoom();
+    }
+
+    function endAllCalls() {
+        for ( var i = 0; i < calls.length; i++ ) {
+            calls[ i ].end();
+        }
+        calls = [];
+    }
+
+    function startApp() {
+        ds.webrtc.registerCallee( iam, onCallRecieved );
+        window.addEventListener( "unload", endAllCalls, true );
+        enterRandomRoom();
+    }
+
+    function stopApp() {
+        exitRoom();
     }
 }

@@ -11,16 +11,49 @@
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
 	<script type="text/javascript" src="src/start.js"></script>
 </head>
-<body onload="start();">
-
-	<template id="remotevideo">
-		<span class="remotevideo videofeed">
-				<span class="username"></span>
-				<video autoplay></video>
-		</span>
-	</template>
-
-	<video id="localvideo" class="localvideo videofeed" autoplay></video>
-
+<body>
+	<div class="webrtc-example">
+		<div class="welcome-screen">
+			<div class="header">
+				<span class="title">
+					Connect to 8<br/>Random People
+				</span>
+			</div>
+			<span class="tshirt"></span>
+			<div class="body">
+				<span class="disclaimer">
+					<i class="fa fa-eye highlight"></i>
+					<span class="highlight">Disclaimer:</span>
+					<span>You are about to video chat with other deepstream enthusiats... so please be nice and wear a shirt, or at the very least some clothes :)</span>
+				</span>
+				<a class="btn btn-start" onclick="start();">
+					<span>OK I get it</span>
+				</a>
+				<div class="note">
+					<span class="asterix">*</span>
+					<span>also we are totally not responsible for anything</span>
+				</div>
+			</div>
+		</div>
+		<div class="conference">
+			<video class="videofeed remotevideo" autoplay></video>
+			<video class="videofeed remotevideo" autoplay></video>
+			<video class="videofeed remotevideo" autoplay></video>
+			<video class="videofeed remotevideo" autoplay></video>
+			<video class="videofeed remotevideo" autoplay></video>
+			<video class="videofeed remotevideo" autoplay></video>
+			<video class="videofeed remotevideo" autoplay></video>
+			<video class="videofeed localvideo" autoplay></video>
+			<video class="videofeed remotevideo" autoplay></video> 
+		</div>
+		<div class="buttons">
+				<a class="btn" onclick="changeRoom();">
+					<span>Change Room</span>
+				</a>
+				<a class="btn" onclick="exit();">
+					<span>Exit</span>
+				</a>
+		</div>
+	</div>
 </body>
 </html>

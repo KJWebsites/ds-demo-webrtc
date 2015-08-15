@@ -70,7 +70,7 @@ module.exports = function( ds ) {
 		}
 
 		if( typeof users[ data.user ] === 'undefined' ) {
-			return 'Please register user as a callee';
+			return 'User not registered';
 		}
 
 		return null;
@@ -94,5 +94,14 @@ module.exports = function( ds ) {
 		addUserToRoom( room, users[ data.user ] )
 
 		response.send( room.users );
+	} );
+
+	ds.rpc.provide( 'exit-room', function( data, response ) {
+		var validationMessage = validate( data );
+		if( validationMessage ) {
+			response.error( validation );
+		}
+		removeUsers( users[ data.user ], rooms );
+		response.send();
 	} );
 };
