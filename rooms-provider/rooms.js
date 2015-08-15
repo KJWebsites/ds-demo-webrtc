@@ -23,11 +23,11 @@ module.exports = function( ds ) {
 
 	function removeUsers( unsubscribedUsers ) {
 		for( var name in unsubscribedUsers ) {
-			removeUser( unsubscribedUsers[ name ] );
+			removeUser( name, unsubscribedUsers[ name ] );
 		}
 	}
 
-	function removeUser( user ) {
+	function removeUser( name, user ) {
 		var room;
 		if( typeof user.room !== 'undefined' ) {
 				room = user.room;
@@ -50,7 +50,7 @@ module.exports = function( ds ) {
 		utils.log( 'Room ' + room.name + ' now has ' + room.users.length + ' users : ' + room.users.join( ',' ) );
 	}
 
-	function getRoom( sortedRooms ) {
+	function getRoom( sortedRooms, currentRoom ) {
 		var room = null;
 		
 		for( var i = 0; i < sortedRooms.length && !room; i++ ) {
@@ -59,7 +59,7 @@ module.exports = function( ds ) {
 				break;
 			}
 		}
-		if( !room ) {
+		if( !room || room === currentRoom ) {
 			room = { name: roomID++, users: [] };
 			rooms.push( room );
 		}
@@ -92,7 +92,7 @@ module.exports = function( ds ) {
 			response.error( validation );
 		}
 
-		room = getRoom( randomRooms );
+		room = getRoom( randomRooms, users[ data.user ].room );
 		addUserToRoom( room, users[ data.user ] )
 
 		response.send( room.users );
@@ -103,7 +103,7 @@ module.exports = function( ds ) {
 		if( validationMessage ) {
 			response.error( validation );
 		}
-		removeUser( users[ data.user ] );
+		removeUser( data.user, users[ data.user ] );
 		response.send();
 	} );
 };
