@@ -6,7 +6,6 @@ function start() {
     } );
 
     var example = document.querySelector( '.webrtc-example' );
-    example.classList.add( 'active' );
 
     var sourcevid = document.querySelector( '.localvideo' );
 
@@ -45,17 +44,20 @@ function start() {
         call.on( 'ended', function() {
             remotevid.classList.remove( 'active' );
             window.URL.revokeObjectURL( remotevid.src );
+            remotevid.src = '';
+            calls.splice( calls.indexOf( remotevid ), 1 );
         } );
     }
 
-    function exitRoom() {
+    function exitRoom( callback ) {
+
         endAllCalls();
         ds.rpc.make( 'exit-room', {
                 user: iam
             },
             function( error, data ) {
                 if ( !error ) {
-                   
+                    callback && callback();
                 }
         } );
     }
@@ -74,6 +76,7 @@ function start() {
                         if ( data[ i ] !== iam ) {
                             call = ds.webrtc.makeCall( data[ i ], metaData, mediaStream );
                             call.on( 'established', onCallEstablished.bind( null, call, metaData ) );
+                            calls.push( call );
                         }
                     }
                 }
@@ -82,8 +85,7 @@ function start() {
     }
 
     function changeRoom() {
-        exitRoom();
-        enterRandomRoom();
+        exitRoom( enterRandomRoom );
     }
 
     function endAllCalls() {
@@ -97,9 +99,17 @@ function start() {
         ds.webrtc.registerCallee( iam, onCallRecieved );
         window.addEventListener( "unload", endAllCalls, true );
         enterRandomRoom();
+        example.classList.add( 'active' );
     }
 
     function stopApp() {
         exitRoom();
+        window.URL.revokeObjectURL( sourcevid.src );
+        mediaStream.stop && mediaStream.stop();
+        sourcevid.src = '';
+        example.classList.remove( 'active' );
     }
+
+    window.changeRoom = changeRoom;
+    window.stopApp = stopApp;
 }
