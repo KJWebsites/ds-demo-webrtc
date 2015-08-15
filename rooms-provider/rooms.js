@@ -21,12 +21,15 @@ module.exports = function( ds ) {
 	  return { currentUsers: currentUsers, unSubscribedUsers: unSubscribedUsers};
 	}
 
-	function removeUsers( unsubscribedUsers, rooms ) {
-		var user;
-		var room;
+	function removeUsers( unsubscribedUsers ) {
 		for( var name in unsubscribedUsers ) {
-			user = unsubscribedUsers[ name ];
-			if( typeof user.room !== 'undefined' ) {
+			removeUser( unsubscribedUsers[ name ] );
+		}
+	}
+
+	function removeUser( user ) {
+		var room;
+		if( typeof user.room !== 'undefined' ) {
 				room = user.room;
 				user = room.users.splice( room.users.indexOf( name ), 1 );
 				utils.log( 'Removing user ' + name + ' from room ' + room.name );
@@ -38,7 +41,6 @@ module.exports = function( ds ) {
 					utils.log( 'Room ' + room.name + ' now has ' + room.users.length + ' users : ' + room.users.join( ',' ) );
 				}
 			}
-		}
 	}
 
 	function addUserToRoom( room, user) {
@@ -101,7 +103,7 @@ module.exports = function( ds ) {
 		if( validationMessage ) {
 			response.error( validation );
 		}
-		removeUsers( users[ data.user ], rooms );
+		removeUser( users[ data.user ] );
 		response.send();
 	} );
 };
