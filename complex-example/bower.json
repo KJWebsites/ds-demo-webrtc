@@ -1,0 +1,15 @@
+{
+  "name": "ds-demo-webrtc-simple",
+  "version": "0.0.0",
+  "homepage": "deepstream.io",
+  "authors": [
+    "Wolfram Hempel <hempel.wolfram@hoxton-one.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "webrtc-adapter": "latest",
+    "deepstream.io-client-js": "latest",
+    "knockout": "3.3.0",
+    "requirejs": "2.1.20"
+  }
+}

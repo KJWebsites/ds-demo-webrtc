@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Group Chat | WebRTC demo</title>
+	
+	<link rel="stylesheet" type="text/css" href="css/screen.css" />
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<script type="text/javascript" src="bower_components/requirejs/require.js" data-main="js/start"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<div class="modal" data-bind="visible: showModal">
+			<div class="modal-content">
+				<form action="#" id="set-name" data-bind="submit: setName, visible: visibleInModal() === 'set-name'">
+					<label for="calleeName">What's your name?</label>
+					<input type="text" data-bind="textInput: calleeName" />
+					<input type="submit" value="OK" />
+				</form>
+			</div>
+		</div>
+		<div class="col videos" data-bind="foreach: calls">
+			<div class="call">
+				<video width="300" height="250" autoplay data-bind="attr:{src:stream}"></video>
+				<div class="controls" data-bind="visible: showControls">
+					<label data-bind="text:calleeName"></label>
+					<div class="fa fa-microphone" title="mute" data-bind="
+						click:toggleMute,
+						attr:{ title: isMute() ? 'un-mute': 'mute' },
+						css:{ 'fa-microphone': !isMute(), 'fa-microphone-slash': isMute }
+					"></div>
+					<div class="fa fa-phone" title="hang up" data-bind="click:hangUp"></div>
+				</div>
+			</div>
+		</div>
+		<ul class="col phonebook" data-bind="foreach: callees">
+			<li data-bind="
+				click: $parent.makeCall.bind( $parent, name() ), 
+				css:{
+					'incoming-call': state() === 'incoming',
+					'outgoing-call': state() === 'outgoing',
+					'established-call': state() === 'established'
+				}">
+				<span class="name" data-bind="text:name"></span>
+				<div class="cancel-call fa fa-close" data-bind="click:cancelCall"></div>
+				<div class="call-controls">
+					<div class="accept fa fa-phone" data-bind="click: acceptCall"></div>
+					<div class="decline fa fa-phone" data-bind="click: declineCall"></div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

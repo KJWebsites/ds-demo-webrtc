@@ -1,0 +1,229 @@
+/**
+ * color scheme
+ * light orange: #FF990D;
+ * dark orange: #D15400;
+ * mid green: #455C00;
+ * dark green: #0B3600;
+ * bright green: #B8CC00;
+ */
+
+*{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	font: 12px/16px Arial, sans-serif;
+	color: #333;
+	outline: none;
+}
+
+body{
+	background: #f6f6f6;
+}
+
+@-webkit-keyframes pulsate {
+  0%   { background-color: #FF990D; }
+  50% { background-color: #D15400; }
+  100% { background-color: #FF990D; }
+}
+
+#wrapper{
+	position: relative;
+	width: 800px;
+	margin: 20px auto;
+	background: #fff;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	height: 500px;
+	overflow: hidden;
+}
+
+.col{
+	height: 100%;
+	float: left;
+}
+
+.col.videos{
+	width: 600px;
+}
+
+.col.phonebook{
+	width: 199px;
+	border-left: 1px solid #ccc;
+}
+
+.phonebook li{
+	padding: 10px;
+	border-bottom: 1px solid #ccc;
+	cursor: pointer;
+	font-weight: bold;
+	position: relative;
+}
+
+.phonebook li:hover{
+	background: #FF990D;
+	color: #FFF;
+}
+
+.phonebook li *{
+	color: inherit;
+	font-weight: bold;
+}
+
+.phonebook li .cancel-call{
+	padding: 12px;
+	color: #fff;
+	cursor: pointer;
+	position: absolute;
+	right: 0;
+	top: 0;
+	display: none;
+}
+
+.phonebook li .cancel-call:hover{
+	background: rgba( 255, 255, 255, 0.3 );
+}
+
+.phonebook li.outgoing-call .cancel-call{
+	display: block;
+}
+
+.phonebook li .call-controls{
+	position: absolute;
+	right: 0;
+	top: 0;
+	display: none;
+}
+
+.phonebook li .call-controls > *{
+	padding: 12px;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.phonebook li .call-controls > *:hover{
+	background: rgba( 255, 255, 255, 0.5 );
+}
+
+.phonebook li .call-controls .accept{
+	color: green;
+}
+
+.phonebook li .call-controls .decline{
+	color: red;
+	transform: rotate( 90deg );
+}
+
+.phonebook li.incoming-call{
+	animation: pulsate 800ms infinite;
+	color: #fff;
+}
+
+.phonebook li.outgoing-call{
+	background-color: #FF990D;
+	color: #fff;
+}
+
+.phonebook li.established-call{
+	background-color: #D15400;
+	color: #fff;
+}
+
+.phonebook li.incoming-call .name{
+	color: #fff;
+}
+
+.phonebook li.incoming-call .call-controls{
+	display: block;
+}
+
+.modal{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba( 0, 0, 0, 0.3 );
+}
+
+.modal-content{
+	width: 280px;
+	padding: 10px;
+	background: #fff;
+	margin: 100px auto;
+	position: relative;
+	z-index: 2;
+}
+
+#set-name label{
+	display: block;
+	color: #666;
+	font-size: 10px;
+}
+
+#set-name input[type=text]{
+	width: 236px;
+	padding: 2px;
+}
+
+#set-name input[type=text]:focus{
+	border: 1px solid #FF990D;
+}
+
+#set-name input[type=submit]{
+	border: 1px solid #AAA;
+	padding: 3px 7px;
+	background: #eee;
+	cursor: pointer;
+}
+
+#set-name input[type=submit]:hover{
+	background: #fafafa;
+}
+
+#set-name input[type=submit]:active{
+	background: #ddd;
+}
+
+.call{
+	width: 300px;
+	height: 250px;
+	background: #000;
+	position: relative;
+	float: left;
+}
+
+.call .controls{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	height: 20px;
+	padding: 0 5px;
+	overflow: hidden;
+	background: rgba( 0,0,0,0.5 );
+}
+
+.call .controls > *{
+	color: #fff;
+	padding: 2px;
+	display: block;
+	float: left;
+}
+
+.call .controls .fa{
+	cursor: pointer;
+	font-size: 14px;
+	width: 20px;
+	height: 14px;
+	padding: 3px 0;
+	text-align: center;
+}
+
+.call .controls .fa:hover{
+	background: rgba( 255, 255, 255, 0.3 );
+}
+
+.call .controls .fa-phone{
+	transform: rotate( 90deg );
+	color: red;
+}
+
