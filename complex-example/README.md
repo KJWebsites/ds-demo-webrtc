@@ -1,4 +1,4 @@
-Simple example for WebRTC with deepstream.io
+A more feature rich example for use of WebRTC with deepstream.io
 ==============================================
 Please find more at [http://deepstream.io/tutorials/webrtc.html]
 
@@ -10,5 +10,4 @@ Requirements
 
 To run this example
 * run `bower install`
-* open `receiver.html` in a browser tab and allow it to use your webcam
-* open `sender.html` in a browser tab and allow it to use your webcam
+* open `index.html` and allow it to use your webcam
