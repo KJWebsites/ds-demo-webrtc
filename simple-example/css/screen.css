@@ -1,0 +1,29 @@
+*{
+	margin: 0;
+	padding: : 0;
+	list-style-type: none;
+}
+
+body{
+	height: 100%;
+	background: #f6f6f6;
+}
+
+#wrapper{
+	background: #fff;
+	border: 1px solid #ccc;
+	padding: 5px;
+	margin: 20px auto;
+	width: 620px;
+	overflow: hidden;
+	position: relative;
+}
+
+#wrapper video{
+	background: #000;
+	float: left;
+}
+
+#wrapper #input-video{
+	margin-right: 20px;
+}
